@@ -3,7 +3,7 @@ services:
     container_name: clone-tabnews-database
     image: postgres:16.4-alpine3.19
     env_file:
-      - ../.env
+      - ../.env.development
     ports:
       - 5432:5432
     # volumes:
