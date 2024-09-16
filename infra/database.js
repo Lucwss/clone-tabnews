@@ -1,6 +1,5 @@
 const pg = require('pg')
 
-
 const client = new pg.Client({
   host: process.env.POSTGRES_HOST,
   port: process.env.POSTGRES_PORT,
