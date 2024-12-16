@@ -3,3 +3,4 @@ package-lock.json
 .next
 infra/pg_data
 coverage
+.idea
