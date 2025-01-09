@@ -4,3 +4,5 @@ package-lock.json
 infra/pg_data
 coverage
 .idea
+.vscode
+.swc
