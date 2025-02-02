@@ -1,3 +1,9 @@
+import orchestrator from "tests/orchestrator.js"
+
+beforeAll(async () => {
+  orchestrator.waitForAllServices()
+})
+
 test('GET to /api/v1/status should return 200', async () => {
 
   const response = await fetch('http://0.0.0.0:3000/api/v1/status')
@@ -16,7 +22,6 @@ test('GET to /api/v1/status should return 200', async () => {
   expect(database).toBeDefined()
 
   const version = database.version
-  const status = database.status
   const maxConnections = database.max_connections
   const openedConnections = database.opened_connections
 
