@@ -1,14 +1,12 @@
 import orchestrator from "tests/orchestrator.js";
-import database from "infra/database.js";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await database.query("drop schema public cascade; create schema public;");
+  await orchestrator.clearDatabase();
 });
 
 describe("GET /api/v1/status", () => {
   describe("Anonymous user", () => {
-
     test("Retrieving current system status", async () => {
       const response = await fetch("http://0.0.0.0:3000/api/v1/status");
       expect(response.status).toBe(200);
@@ -38,5 +36,5 @@ describe("GET /api/v1/status", () => {
       expect(openedConnections).toBeDefined();
       expect(openedConnections).toEqual(1);
     });
-  })
-})
+  });
+});
