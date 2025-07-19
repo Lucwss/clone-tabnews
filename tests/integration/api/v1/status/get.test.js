@@ -6,32 +6,37 @@ beforeAll(async () => {
   await database.query("drop schema public cascade; create schema public;");
 });
 
-test("GET to /api/v1/status should return 200", async () => {
-  const response = await fetch("http://0.0.0.0:3000/api/v1/status");
-  expect(response.status).toBe(200);
+describe("GET /api/v1/status", () => {
+  describe("Anonymous user", () => {
 
-  const responseBody = await response.json();
-  expect(responseBody).toBeDefined();
+    test("Retrieving current system status", async () => {
+      const response = await fetch("http://0.0.0.0:3000/api/v1/status");
+      expect(response.status).toBe(200);
 
-  const updatedAt = responseBody.updated_at;
-  const dateParsedUpdatedAt = new Date(updatedAt).toISOString();
-  expect(updatedAt).toEqual(dateParsedUpdatedAt);
+      const responseBody = await response.json();
+      expect(responseBody).toBeDefined();
 
-  const dependencies = responseBody.dependencies;
-  const database = dependencies.database;
+      const updatedAt = responseBody.updated_at;
+      const dateParsedUpdatedAt = new Date(updatedAt).toISOString();
+      expect(updatedAt).toEqual(dateParsedUpdatedAt);
 
-  expect(database).toBeDefined();
+      const dependencies = responseBody.dependencies;
+      const database = dependencies.database;
 
-  const version = database.version;
-  const maxConnections = database.max_connections;
-  const openedConnections = database.opened_connections;
+      expect(database).toBeDefined();
 
-  expect(version).toBeDefined();
-  expect(version).toEqual("16.4");
+      const version = database.version;
+      const maxConnections = database.max_connections;
+      const openedConnections = database.opened_connections;
 
-  expect(maxConnections).toBeDefined();
-  expect(maxConnections).toEqual(100);
+      expect(version).toBeDefined();
+      expect(version).toEqual("16.4");
 
-  expect(openedConnections).toBeDefined();
-  expect(openedConnections).toEqual(1);
-});
+      expect(maxConnections).toBeDefined();
+      expect(maxConnections).toEqual(100);
+
+      expect(openedConnections).toBeDefined();
+      expect(openedConnections).toEqual(1);
+    });
+  })
+})
