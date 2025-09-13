@@ -14,7 +14,7 @@ async function cleanDatabase() {
 
 describe("GET /api/v1/migrations", () => {
   describe("Anonymous user", () => {
-    test("Running pending migations", async () => {
+    test("Retrieving pending migations", async () => {
       const response = await fetch("http://0.0.0.0:3000/api/v1/migrations");
       expect(response.status).toBe(200);
 
