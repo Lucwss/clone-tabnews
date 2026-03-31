@@ -1,14 +1,14 @@
 import { InternalServerError, MethodNowAlloedError } from "infra/errors";
 
 function onNoMatchHandler(request, response) {
-  const publicErrorObject = new MethodNowAlloedError()
-  response.status(publicErrorObject.statusCode).json(publicErrorObject)
+  const publicErrorObject = new MethodNowAlloedError();
+  response.status(publicErrorObject.statusCode).json(publicErrorObject);
 }
 
 function onErrorHandler(error, request, response) {
   const publicErrorObject = new InternalServerError({
     statusCode: error.statusCode,
-    cause: error
+    cause: error,
   });
 
   console.error(publicErrorObject);
@@ -19,8 +19,8 @@ function onErrorHandler(error, request, response) {
 const controller = {
   errorHandlers: {
     onNoMatch: onNoMatchHandler,
-    onError: onErrorHandler
-  }
-}
+    onError: onErrorHandler,
+  },
+};
 
 export default controller;
