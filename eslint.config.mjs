@@ -13,6 +13,7 @@ export default [
       "coverage/**",
       "out/**",
       "infra/migrations/**",
+      "models/**",
     ],
   },
 

@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import database from "infra/database";
 
 const defaultMigrationOptions = {
-  dir: resolve("infra", "migrations"),
+  dir: resolve(process.cwd(), "infra", "migrations"),
   direction: "up",
   dryRun: true,
   verbose: true,
@@ -20,7 +20,10 @@ async function listPendingMigrations() {
       ...defaultMigrationOptions,
     });
 
-    return pendingMigrations
+    return pendingMigrations;
+  } catch (error) {
+    console.error("Migration error:", error);
+    throw error;
   } finally {
     await dbClient?.end();
   }
@@ -38,7 +41,10 @@ async function runPendingMigrations() {
       dryRun: false,
     });
 
-    return migratedMigrations
+    return migratedMigrations;
+  } catch (error) {
+    console.error("Migration error:", error);
+    throw error;
   } finally {
     await dbClient?.end();
   }
@@ -46,7 +52,7 @@ async function runPendingMigrations() {
 
 const migrator = {
   listPendingMigrations,
-  runPendingMigrations
-}
+  runPendingMigrations,
+};
 
 export default migrator;
