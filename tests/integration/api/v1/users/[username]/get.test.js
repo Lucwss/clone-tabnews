@@ -1,5 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
-import { version as uuidVersion } from "uuid"
+import { version as uuidVersion } from "uuid";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -9,24 +9,24 @@ beforeAll(async () => {
 
 describe("GET /api/v1/users/[username]", () => {
   describe("Anonymous user", () => {
-
     test("With exact case match", async () => {
-
       const response1 = await fetch("http://0.0.0.0:3000/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: "MesmoCase",
           email: "mesmo.case@email.com",
-          password: "senha123"
-        })
+          password: "senha123",
+        }),
       });
 
       expect(response1.status).toBe(201);
 
-      const response2 = await fetch("http://0.0.0.0:3000/api/v1/users/MesmoCase");
+      const response2 = await fetch(
+        "http://0.0.0.0:3000/api/v1/users/MesmoCase",
+      );
 
       expect(response2.status).toBe(200);
 
@@ -34,12 +34,12 @@ describe("GET /api/v1/users/[username]", () => {
 
       expect(response2Body).toEqual({
         id: response2Body.id,
-        username: 'MesmoCase',
-        email: 'mesmo.case@email.com',
-        password: 'senha123',
+        username: "MesmoCase",
+        email: "mesmo.case@email.com",
+        password: "senha123",
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
-      })
+      });
 
       expect(uuidVersion(response2Body.id)).toBe(4);
       expect(Date.parse(response2Body.created_at)).not.toBeNaN();
@@ -47,22 +47,23 @@ describe("GET /api/v1/users/[username]", () => {
     });
 
     test("With case mismatch", async () => {
-
       const response1 = await fetch("http://0.0.0.0:3000/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: "CaseDiferente",
           email: "case.diferente@email.com",
-          password: "senha123"
-        })
+          password: "senha123",
+        }),
       });
 
       expect(response1.status).toBe(201);
 
-      const response2 = await fetch("http://0.0.0.0:3000/api/v1/users/casediferente");
+      const response2 = await fetch(
+        "http://0.0.0.0:3000/api/v1/users/casediferente",
+      );
 
       expect(response2.status).toBe(200);
 
@@ -70,12 +71,12 @@ describe("GET /api/v1/users/[username]", () => {
 
       expect(response2Body).toEqual({
         id: response2Body.id,
-        username: 'CaseDiferente',
-        email: 'case.diferente@email.com',
-        password: 'senha123',
+        username: "CaseDiferente",
+        email: "case.diferente@email.com",
+        password: "senha123",
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
-      })
+      });
 
       expect(uuidVersion(response2Body.id)).toBe(4);
       expect(Date.parse(response2Body.created_at)).not.toBeNaN();
@@ -83,8 +84,9 @@ describe("GET /api/v1/users/[username]", () => {
     });
 
     test("With non existent", async () => {
-
-      const response = await fetch("http://0.0.0.0:3000/api/v1/users/notExistUser");
+      const response = await fetch(
+        "http://0.0.0.0:3000/api/v1/users/notExistUser",
+      );
 
       expect(response.status).toBe(404);
 
@@ -94,8 +96,8 @@ describe("GET /api/v1/users/[username]", () => {
         name: "NotFoundError",
         message: "The username was not found in system",
         action: "Check if yout username is correct",
-        status_code: 404
-      })
+        status_code: 404,
+      });
     });
   });
 });

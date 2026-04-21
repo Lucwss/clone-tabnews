@@ -2,11 +2,11 @@ import database from "infra/database.js";
 import { ValidationError, NotFoundError } from "infra/errors.js";
 
 async function create(userInputValues) {
-  await validateUniqueEmail(userInputValues.email)
-  await validateUniqueUsername(userInputValues.username)
+  await validateUniqueEmail(userInputValues.email);
+  await validateUniqueUsername(userInputValues.username);
 
-  const newUser = await runInQuery(userInputValues)
-  return newUser
+  const newUser = await runInQuery(userInputValues);
+  return newUser;
 
   async function validateUniqueUsername(username) {
     const results = await database.query({
@@ -19,14 +19,14 @@ async function create(userInputValues) {
         LOWER(username) = LOWER($1)
       ;`,
 
-      values: [username]
-    })
+      values: [username],
+    });
 
     if (results.rowCount > 0) {
       throw new ValidationError({
         message: "The username is already used.",
-        action: "Choose a different username."
-      })
+        action: "Choose a different username.",
+      });
     }
   }
 
@@ -41,14 +41,14 @@ async function create(userInputValues) {
         LOWER(email) = LOWER($1)
       ;`,
 
-      values: [email]
-    })
+      values: [email],
+    });
 
     if (results.rowCount > 0) {
       throw new ValidationError({
         message: "The email is already used.",
-        action: "Choose a different email."
-      })
+        action: "Choose a different email.",
+      });
     }
   }
 
@@ -66,16 +66,17 @@ async function create(userInputValues) {
       values: [
         userInputValues.username,
         userInputValues.email,
-        userInputValues.password]
-    })
+        userInputValues.password,
+      ],
+    });
 
-    return results.rows[0]
+    return results.rows[0];
   }
 }
 
 async function findOneByUsername(username) {
-  const userFound = await runSelectQuery(username)
-  return userFound
+  const userFound = await runSelectQuery(username);
+  return userFound;
 
   async function runSelectQuery(username) {
     const results = await database.query({
@@ -90,23 +91,23 @@ async function findOneByUsername(username) {
         1
       ;`,
 
-      values: [username]
-    })
+      values: [username],
+    });
 
     if (results.rowCount === 0) {
       throw new NotFoundError({
         message: "The username was not found in system",
         action: "Check if yout username is correct",
-      })
+      });
     }
 
-    return results.rows[0]
+    return results.rows[0];
   }
 }
 
 const user = {
   create,
-  findOneByUsername
-}
+  findOneByUsername,
+};
 
 export default user;

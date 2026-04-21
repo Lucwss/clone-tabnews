@@ -1,5 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
-import { version as uuidVersion } from "uuid"
+import { version as uuidVersion } from "uuid";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
@@ -10,17 +10,16 @@ beforeAll(async () => {
 describe("POST /api/v1/users", () => {
   describe("Anonymous user", () => {
     test("With unique and valid data", async () => {
-
       const response = await fetch("http://0.0.0.0:3000/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: "lucasemanoel",
           email: "lucas@email.com",
-          password: "senha123"
-        })
+          password: "senha123",
+        }),
       });
 
       expect(response.status).toBe(201);
@@ -29,12 +28,12 @@ describe("POST /api/v1/users", () => {
 
       expect(responseBody).toEqual({
         id: responseBody.id,
-        username: 'lucasemanoel',
-        email: 'lucas@email.com',
-        password: 'senha123',
+        username: "lucasemanoel",
+        email: "lucas@email.com",
+        password: "senha123",
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
-      })
+      });
 
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
@@ -42,17 +41,16 @@ describe("POST /api/v1/users", () => {
     });
 
     test("With duplicated email", async () => {
-
       const response1 = await fetch("http://0.0.0.0:3000/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: "emailduplicado1",
           email: "duplicado@email.com",
-          password: "senha123"
-        })
+          password: "senha123",
+        }),
       });
 
       expect(response1.status).toBe(201);
@@ -60,38 +58,38 @@ describe("POST /api/v1/users", () => {
       const response2 = await fetch("http://0.0.0.0:3000/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: "emailduplicado2",
           email: "Duplicado@email.com",
-          password: "senha123"
-        })
+          password: "senha123",
+        }),
       });
 
       expect(response2.status).toBe(400);
 
-      const response2Body = await response2.json()
+      const response2Body = await response2.json();
 
       expect(response2Body).toEqual({
         name: "ValidationError",
         message: "The email is already used.",
         action: "Choose a different email.",
-        status_code: 400
-      })
+        status_code: 400,
+      });
     });
 
     test("With duplicated username", async () => {
       const response1 = await fetch("http://0.0.0.0:3000/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: "sameusername001",
           email: "other-email@email.com",
-          password: "senha123"
-        })
+          password: "senha123",
+        }),
       });
 
       expect(response1.status).toBe(201);
@@ -99,13 +97,13 @@ describe("POST /api/v1/users", () => {
       const response2 = await fetch("http://0.0.0.0:3000/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           username: "sameusername001",
           email: "testeusername@email.com",
-          password: "senha123"
-        })
+          password: "senha123",
+        }),
       });
       expect(response2.status).toBe(400);
 
@@ -115,8 +113,8 @@ describe("POST /api/v1/users", () => {
         name: "ValidationError",
         message: "The username is already used.",
         action: "Choose a different username.",
-        status_code: 400
-      })
-    })
+        status_code: 400,
+      });
+    });
   });
 });
