@@ -78,3 +78,22 @@ export class MethodNowAlloedError extends Error {
     };
   }
 }
+
+export class NotFoundError extends Error {
+  constructor({ cause, message, action }) {
+    super(message || "Not possible to find this resource in system", cause);
+
+    this.name = "NotFoundError";
+    this.action = action || "Check if sent parameters are correct";
+    this.statusCode = 404;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
