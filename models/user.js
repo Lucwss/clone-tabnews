@@ -5,7 +5,7 @@ import password from "models/password.js";
 async function create(userInputValues) {
   await validateUniqueUsername(userInputValues.username);
   await validateUniqueEmail(userInputValues.email);
-  await hashPasswordInObject(userInputValues)
+  await hashPasswordInObject(userInputValues);
 
   const newUser = await runInQuery(userInputValues);
   return newUser;
@@ -95,10 +95,10 @@ async function update(username, userInputValues) {
   }
 
   if ("password" in userInputValues) {
-    await hashPasswordInObject(userInputValues)
+    await hashPasswordInObject(userInputValues);
   }
 
-  const userWithNewValues = { ...currentUser, ...userInputValues }
+  const userWithNewValues = { ...currentUser, ...userInputValues };
 
   const updatedUser = await runUpdateQuery(userWithNewValues);
   return updatedUser;
@@ -122,11 +122,11 @@ async function update(username, userInputValues) {
         userWithNewValues.id,
         userWithNewValues.username,
         userWithNewValues.email,
-        userWithNewValues.password
-      ]
-    })
+        userWithNewValues.password,
+      ],
+    });
 
-    return results.rows[0]
+    return results.rows[0];
   }
 }
 
