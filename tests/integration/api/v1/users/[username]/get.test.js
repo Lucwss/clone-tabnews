@@ -13,7 +13,7 @@ describe("GET /api/v1/users/[username]", () => {
       const targetUsername = "MesmoCase";
       const createdUser = await orchestrator.createUser({
         username: targetUsername,
-      })
+      });
 
       const response2 = await fetch(
         "http://0.0.0.0:3000/api/v1/users/MesmoCase",
@@ -41,7 +41,7 @@ describe("GET /api/v1/users/[username]", () => {
       const targetUsername = "CaseDiferente";
       const createdUser = await orchestrator.createUser({
         username: targetUsername,
-      })
+      });
 
       const response2 = await fetch(
         "http://0.0.0.0:3000/api/v1/users/casediferente",

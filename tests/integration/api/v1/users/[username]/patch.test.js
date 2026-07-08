@@ -31,18 +31,21 @@ describe("PATCH /api/v1/users/[username]", () => {
       });
     });
     test("With duplicated username", async () => {
-      const createdUser1 = await orchestrator.createUser({})
-      const createdUser2 = await orchestrator.createUser({})
+      const createdUser1 = await orchestrator.createUser({});
+      const createdUser2 = await orchestrator.createUser({});
 
-      const response = await fetch(`http://0.0.0.0:3000/api/v1/users/${createdUser2.username}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `http://0.0.0.0:3000/api/v1/users/${createdUser2.username}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: createdUser1.username,
+          }),
         },
-        body: JSON.stringify({
-          username: createdUser1.username,
-        }),
-      });
+      );
 
       expect(response.status).toBe(400);
 
@@ -56,18 +59,21 @@ describe("PATCH /api/v1/users/[username]", () => {
       });
     });
     test("With duplicated email", async () => {
-      const createdUser1 = await orchestrator.createUser({})
-      const createdUser2 = await orchestrator.createUser({})
+      const createdUser1 = await orchestrator.createUser({});
+      const createdUser2 = await orchestrator.createUser({});
 
-      const response = await fetch(`http://0.0.0.0:3000/api/v1/users/${createdUser2.username}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `http://0.0.0.0:3000/api/v1/users/${createdUser2.username}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: createdUser1.email,
+          }),
         },
-        body: JSON.stringify({
-          email: createdUser1.email,
-        }),
-      });
+      );
 
       expect(response.status).toBe(400);
 
@@ -81,8 +87,8 @@ describe("PATCH /api/v1/users/[username]", () => {
       });
     });
     test("With unique username", async () => {
-      const createdUser1 = await orchestrator.createUser({})
-      const newUserName = "uniqueUser2"
+      const createdUser1 = await orchestrator.createUser({});
+      const newUserName = "uniqueUser2";
 
       const response = await fetch(
         `http://0.0.0.0:3000/api/v1/users/${createdUser1.username}`,
@@ -117,8 +123,8 @@ describe("PATCH /api/v1/users/[username]", () => {
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
     test("With unique email", async () => {
-      const createdUser1 = await orchestrator.createUser({})
-      const newUniqueEmail= "uniqueEmail2@email.com"
+      const createdUser1 = await orchestrator.createUser({});
+      const newUniqueEmail = "uniqueEmail2@email.com";
       const response = await fetch(
         `http://0.0.0.0:3000/api/v1/users/${createdUser1.username}`,
         {
@@ -152,8 +158,8 @@ describe("PATCH /api/v1/users/[username]", () => {
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
     test("With new password", async () => {
-      const createdUser1 = await orchestrator.createUser({})
-      const newPassword = "newPassword2"
+      const createdUser1 = await orchestrator.createUser({});
+      const newPassword = "newPassword2";
       const response = await fetch(
         `http://0.0.0.0:3000/api/v1/users/${createdUser1.username}`,
         {
@@ -186,7 +192,9 @@ describe("PATCH /api/v1/users/[username]", () => {
 
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
-      const userInDatabase = await user.findOneByUsername(createdUser1.username);
+      const userInDatabase = await user.findOneByUsername(
+        createdUser1.username,
+      );
       const correctPasswordMatch = await password.compare(
         newPassword,
         userInDatabase.password,
