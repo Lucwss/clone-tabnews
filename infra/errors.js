@@ -60,7 +60,8 @@ export class ValidationError extends Error {
     };
   }
 }
-export class MethodNowAlloedError extends Error {
+
+export class MethodNotAllowedError extends Error {
   constructor() {
     super("Method not allowed for this endpoint.");
 
@@ -86,6 +87,25 @@ export class NotFoundError extends Error {
     this.name = "NotFoundError";
     this.action = action || "Check if sent parameters are correct";
     this.statusCode = 404;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
+
+export class UnauthorizedError extends Error {
+  constructor({ cause, message, action }) {
+    super(message || "User not authorized", cause);
+
+    this.name = "UnauthorizedError";
+    this.action = action || "Log-in again to continue.";
+    this.statusCode = 401;
   }
 
   toJSON() {
