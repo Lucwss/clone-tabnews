@@ -1,13 +1,13 @@
 import database from "infra/database";
-import crypto from "node:crypto"
+import crypto from "node:crypto";
 
-const EXPIRATION_IN_MILLISECONDS = 60 * 60 * 24 * 30 * 1000 // 30 days
+const EXPIRATION_IN_MILLISECONDS = 60 * 60 * 24 * 30 * 1000; // 30 days
 
 async function create(userId) {
-  const token = crypto.randomBytes(48).toString("hex")
-  const expiresAt = new Date(Date.now() + EXPIRATION_IN_MILLISECONDS)
-  const newSession = await runInsertQuery(token, userId, expiresAt)
-  return newSession
+  const token = crypto.randomBytes(48).toString("hex");
+  const expiresAt = new Date(Date.now() + EXPIRATION_IN_MILLISECONDS);
+  const newSession = await runInsertQuery(token, userId, expiresAt);
+  return newSession;
 
   async function runInsertQuery(token, userId, expiresAt) {
     const result = await database.query({
@@ -19,16 +19,15 @@ async function create(userId) {
         RETURNING
           *
       `,
-      values: [token, userId, expiresAt]
-    })
-    return result.rows[0]
+      values: [token, userId, expiresAt],
+    });
+    return result.rows[0];
   }
 }
 
-
 const session = {
   create,
-  EXPIRATION_IN_MILLISECONDS
-}
+  EXPIRATION_IN_MILLISECONDS,
+};
 
 export default session;

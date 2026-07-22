@@ -4,16 +4,16 @@ import { NotFoundError, UnauthorizedError } from "../infra/errors";
 
 async function getAuthenticatedUser(providedEmail, providedPassword) {
   try {
-    const storedUser = await findUserByEmail(providedEmail)
-    await validatePassword(providedPassword, storedUser.password)
+    const storedUser = await findUserByEmail(providedEmail);
+    await validatePassword(providedPassword, storedUser.password);
 
-    return storedUser
+    return storedUser;
   } catch (error) {
     if (error instanceof UnauthorizedError) {
       throw new UnauthorizedError({
         message: "No match data",
         action: "Check credentials.",
-      })
+      });
     }
 
     throw error;
@@ -29,7 +29,7 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
         throw new UnauthorizedError({
           message: "Incorrect Email",
           action: "Check credentials.",
-        })
+        });
       }
 
       throw error;
@@ -41,20 +41,20 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
   async function validatePassword(providedPassword, storedPassword) {
     const correctPassword = await password.compare(
       providedPassword,
-      storedPassword)
+      storedPassword,
+    );
 
     if (!correctPassword) {
       throw new UnauthorizedError({
         message: "Incorrect Password",
         action: "Check credentials.",
-      })
+      });
     }
   }
 }
 
-
 const authentication = {
-  getAuthenticatedUser
-}
+  getAuthenticatedUser,
+};
 
 export default authentication;

@@ -19,7 +19,7 @@ exports.up = (pgm) => {
     expires_at: {
       type: "timestamptz",
       notNull: true,
-    },   
+    },
     created_at: {
       type: "timestamptz",
       notNull: true,

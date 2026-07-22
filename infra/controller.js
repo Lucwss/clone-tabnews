@@ -3,7 +3,7 @@ import {
   MethodNotAllowedError,
   ValidationError,
   NotFoundError,
-  UnauthorizedError
+  UnauthorizedError,
 } from "infra/errors";
 
 function onNoMatchHandler(request, response) {
@@ -12,7 +12,11 @@ function onNoMatchHandler(request, response) {
 }
 
 function onErrorHandler(error, request, response) {
-  if (error instanceof ValidationError || error instanceof NotFoundError || error instanceof UnauthorizedError) {
+  if (
+    error instanceof ValidationError ||
+    error instanceof NotFoundError ||
+    error instanceof UnauthorizedError
+  ) {
     return response.status(error.statusCode).json(error);
   }
 
